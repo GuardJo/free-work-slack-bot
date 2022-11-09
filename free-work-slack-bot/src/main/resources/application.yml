@@ -1,0 +1,15 @@
+server:
+  port: 9602
+spring:
+  data:
+    mongodb:
+      database: freeworker
+      port: 27017
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  mongodb:
+    embedded:
+      version: 4.0.21
