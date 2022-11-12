@@ -36,6 +36,10 @@ public class Worker {
         return Objects.hash(id);
     }
 
+    protected Worker() {
+
+    }
+
     private Worker(String name) {
         this.name = name;
     }

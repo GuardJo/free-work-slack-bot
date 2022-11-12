@@ -3,8 +3,8 @@ server:
 spring:
   data:
     mongodb:
-      database: freeworker
-      port: 27017
+      uri: ${MONGODB_CONNECTION_STRING}
+      database: "work_slack_bot"
 ---
 spring:
   config:
