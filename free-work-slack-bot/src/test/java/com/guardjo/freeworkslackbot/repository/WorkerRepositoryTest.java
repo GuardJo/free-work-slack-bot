@@ -2,7 +2,6 @@ package com.guardjo.freeworkslackbot.repository;
 
 import com.guardjo.freeworkslackbot.config.DataInitConfig;
 import com.guardjo.freeworkslackbot.domain.Worker;
-import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,7 +65,9 @@ class WorkerRepositoryTest {
         Worker worker = workerRepository.findAll().get(0);
         worker.setTodayWorkTime(7);
 
+        System.out.println(workerRepository.count());
         workerRepository.save(worker);
+        System.out.println(workerRepository.count());
 
         Worker updateWorker = workerRepository.findById(worker.getId()).get();
 
@@ -76,10 +77,7 @@ class WorkerRepositoryTest {
     @DisplayName("작업자 제거 테스트")
     @Test
     void testDeleteWorker() {
-        ObjectId objectId = workerRepository.findOne(
-                Example.of(Worker.of(""), ExampleMatcher.matchingAny()))
-                .get().getId();
-        workerRepository.deleteById(objectId);
+        workerRepository.deleteById("10");
 
         assertThat(workerRepository.count()).isEqualTo(testDataSize - 1);
     }
@@ -87,7 +85,8 @@ class WorkerRepositoryTest {
     @DisplayName("해당하는 이름의 작업자 정보 반환 테스트")
     @Test
     void testGetWorkerWithName() {
-        List<Worker> workers = workerRepository.findByName("Rouvin Kendell");
+        // data.json 내 첫번째 데이터
+        List<Worker> workers = workerRepository.findByName("Hinda Jiruca");
 
         assertThat(workers.size()).isNotEqualTo(0);
     }
@@ -95,7 +94,8 @@ class WorkerRepositoryTest {
     @DisplayName("해당하는 이름의 작업자 제거 테스트")
     @Test
     void testDelteWorkerWithName() {
-        workerRepository.deleteByName("Rouvin Kendell");
+        // data.json 파일 내 2번째 데이터
+        workerRepository.deleteByName("Gavrielle Lean");
 
         assertThat(workerRepository.count()).isEqualTo(testDataSize - 1);
     }
