@@ -1,7 +1,8 @@
 package com.guardjo.freeworkslackbot.domain;
 
-import lombok.*;
-import org.bson.types.ObjectId;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -15,7 +16,7 @@ import java.util.Objects;
 @ToString
 public class Worker {
     @MongoId
-    private ObjectId id;
+    private String id;
 
     @Indexed
     private String name;
