@@ -3,6 +3,8 @@ package com.guardjo.freeworkslackbot.repository;
 import com.guardjo.freeworkslackbot.config.DataInitConfig;
 import com.guardjo.freeworkslackbot.domain.Worker;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +22,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(DataInitConfig.class)
 @DataMongoTest
 class WorkerRepositoryTest {
-    private int testDataSize = 100;
+    private int testDataSize;
     @Autowired
     private WorkerRepository workerRepository;
+
+    @BeforeEach
+    void setUp() {
+        this.testDataSize = (int) workerRepository.count();
+    }
+
+    @AfterEach
+    void tearDown() {
+        this.testDataSize = (int) workerRepository.count();
+    }
 
     @DisplayName("작업자 생성 테스트")
     @Test
     void testCreateWorker() {
         workerRepository.save(Worker.of("TestUser"));
 
-        assertThat(workerRepository.count()).isEqualTo(++testDataSize);
+        assertThat(workerRepository.count()).isEqualTo(testDataSize + 1);
     }
 
     @DisplayName("작업자 단일 조회 테스트")
@@ -69,7 +81,7 @@ class WorkerRepositoryTest {
                 .get().getId();
         workerRepository.deleteById(objectId);
 
-        assertThat(workerRepository.count()).isEqualTo(--testDataSize);
+        assertThat(workerRepository.count()).isEqualTo(testDataSize - 1);
     }
 
     @DisplayName("해당하는 이름의 작업자 정보 반환 테스트")
@@ -85,6 +97,6 @@ class WorkerRepositoryTest {
     void testDelteWorkerWithName() {
         workerRepository.deleteByName("Rouvin Kendell");
 
-        assertThat(workerRepository.count()).isEqualTo(--testDataSize);
+        assertThat(workerRepository.count()).isEqualTo(testDataSize - 1);
     }
 }
