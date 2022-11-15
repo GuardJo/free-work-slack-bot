@@ -24,6 +24,8 @@ class WorkerServiceTest {
     private final String TEST_NAME = "testName";
     @Mock
     private WorkerRepository workerRepository;
+    @Mock
+    private TimeCalculator timeCalculator;
     @InjectMocks
     private WorkerServiceImpl workerService;
 
@@ -60,8 +62,9 @@ class WorkerServiceTest {
         Worker worker = Worker.of(TEST_NAME);
         worker.setWorkStartTime(new Date());
         given(workerRepository.findByName(any())).willReturn(List.of(worker));
+        given(timeCalculator.calculateTime(any(), any())).willReturn(8.0F);
 
-        assertThatCode(() -> workerService.finishWork(TEST_NAME)).doesNotThrowAnyException();
+        assertThat(workerService.finishWork(TEST_NAME)).isEqualTo(8.0F);
     }
 
     @DisplayName("특정 사용자의 업무 기록 조회 테스트")

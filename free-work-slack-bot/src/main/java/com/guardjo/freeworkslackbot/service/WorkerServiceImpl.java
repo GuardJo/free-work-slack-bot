@@ -14,6 +14,9 @@ import java.util.List;
 public class WorkerServiceImpl implements WorkerService {
     @Autowired
     private WorkerRepository workerRepository;
+    @Autowired
+    private TimeCalculator timeCalculator;
+
     @Override
     public Worker createWorker(String workerName) {
         Worker worker = getWorker(workerName);
@@ -61,19 +64,28 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void finishWork(String workerName) {
+    public float finishWork(String workerName) {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
             log.error("[Test] Not Found Work Start Time", workerName);
+
+            // 올바르지 않은 시간 값이나, 사용자가 입력으로 들어온 경우
+            return -1;
         }
         else {
             worker.setWorkFinishedTime(new Date());
-            calculateWorkTime(worker);
+            worker.setTodayWorkTime(
+                    timeCalculator.calculateTime(worker.getWorkStartTime(), worker.getWorkFinishedTime())
+            );
+
+            worker.setWeeklyWorkTime(worker.getWeeklyWorkTime() + worker.getTodayWorkTime());
             log.info("[Test] Update WorkTime, todayWorkTime : {}, weeklyWorkTime : {}"
                     , worker.getTodayWorkTime(), worker.getWeeklyWorkTime());
 
             workerRepository.save(worker);
+
+            return worker.getTodayWorkTime();
         }
     }
 
@@ -118,19 +130,5 @@ public class WorkerServiceImpl implements WorkerService {
         }
 
         return workers;
-    }
-
-    /**
-     * 출, 퇴근 기록을 바탕으로 일일 근무시간 및 주간 근무시간을 계산한다
-     * @param worker 직원
-     */
-    private void calculateWorkTime(Worker worker) {
-        Date startTime = worker.getWorkStartTime();
-        Date finishTime = worker.getWorkFinishedTime();
-
-        int todayWorkTime = (int) (finishTime.getTime() - startTime.getTime());
-
-        worker.setTodayWorkTime(todayWorkTime);
-        worker.setWeeklyWorkTime(worker.getWeeklyWorkTime() + todayWorkTime);
     }
 }
