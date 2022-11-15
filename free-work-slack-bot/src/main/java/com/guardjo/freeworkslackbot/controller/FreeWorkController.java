@@ -17,17 +17,23 @@ public class FreeWorkController {
     private WorkerService workerService;
 
     @PutMapping(FreeWorkConstant.WORK_START_URL)
-    public void startWork(@RequestBody UpdateWorker updateWorker) {
+    public String startWork(@RequestBody UpdateWorker updateWorker) {
         log.info("[Test] Work Start!");
 
         workerService.startWork(updateWorker.getWorkerName());
+
+        return updateWorker.getWorkerName() + "님이 출근하셨습니다.";
     }
 
     @PutMapping(FreeWorkConstant.WORK_FINISH_URL)
-    public void finishWork(@RequestBody UpdateWorker updateWorker) {
+    public String finishWork(@RequestBody UpdateWorker updateWorker) {
         log.info("[Test] Work Finish!");
 
-        workerService.finishWork(updateWorker.getWorkerName());
+        float workTime = workerService.finishWork(updateWorker.getWorkerName());
+        float weeklyTime = workerService.getWorker(updateWorker.getWorkerName()).getWeeklyWorkTime();
+
+        return updateWorker.getWorkerName() + "님이 퇴근하셨습니다, 금일 업무시간은 " +
+                workTime +  "/" + weeklyTime + "시간 입니다.";
     }
 
     @GetMapping(FreeWorkConstant.WORK_STATUS_URL)
