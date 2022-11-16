@@ -97,9 +97,9 @@ public class WorkerServiceImpl implements WorkerService {
             log.error("[Test] Not Found Work Start Time", workerName);
         }
         else {
-            worker.setWeeklyWorkTime(0);
             worker.setTodayWorkTime(0);
             worker.setWorkStartTime(null);
+            worker.setWorkFinishedTime(null);
 
             workerRepository.save(worker);
 
