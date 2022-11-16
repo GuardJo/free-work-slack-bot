@@ -6,4 +6,8 @@ public class FreeWorkConstant {
     public final static String WORK_FINISH_URL = "/work-finish";
     public final static String WORK_STATUS_URL = "/status";
     public final static String WORK_TEAM_STATUS = "/team-status";
+
+    public final static String RESET_TODAY = "/reset-today";
+
+    public final static String RESET_WEEK = "/reset-week";
 }

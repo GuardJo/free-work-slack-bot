@@ -17,7 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FreeWorkControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -75,10 +75,30 @@ class FreeWorkControllerTest {
                 .andDo(print());
     }
 
+    @DisplayName("/reset-today, /reset-week 요청 테스트")
+    @ParameterizedTest
+    @MethodSource("resetURL")
+    void testPutResetTime(String resetUrl) throws Exception {
+        String content = objectMapper.writeValueAsString(UpdateWorker.of("testName"));
+
+        mockMvc.perform(put(FreeWorkConstant.WORK_FINISH_URL)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
     private static Stream<Arguments> updateWorkerBody() {
         return Stream.of(
                 Arguments.of(UpdateWorker.of("testName")),
                 Arguments.of(UpdateWorker.of("Rouvin Kendell"))
+        );
+    }
+
+    private static Stream<Arguments> resetURL() {
+        return Stream.of(
+                Arguments.of(FreeWorkConstant.RESET_TODAY),
+                Arguments.of(FreeWorkConstant.RESET_WEEK)
         );
     }
 }

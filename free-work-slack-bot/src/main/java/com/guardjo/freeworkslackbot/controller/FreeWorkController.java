@@ -17,7 +17,7 @@ public class FreeWorkController {
     private WorkerService workerService;
 
     @PutMapping(FreeWorkConstant.WORK_START_URL)
-    public String startWork(@RequestBody UpdateWorker updateWorker) {
+    public String startWork(@RequestBody UpdateWorker updateWorker) throws Exception {
         log.info("[Test] Work Start!");
 
         workerService.startWork(updateWorker.getWorkerName());
@@ -26,7 +26,7 @@ public class FreeWorkController {
     }
 
     @PutMapping(FreeWorkConstant.WORK_FINISH_URL)
-    public String finishWork(@RequestBody UpdateWorker updateWorker) {
+    public String finishWork(@RequestBody UpdateWorker updateWorker) throws Exception {
         log.info("[Test] Work Finish!");
 
         float workTime = workerService.finishWork(updateWorker.getWorkerName());
@@ -36,15 +36,33 @@ public class FreeWorkController {
                 workTime +  "/" + weeklyTime + "시간 입니다.";
     }
 
+    @PutMapping(FreeWorkConstant.RESET_TODAY)
+    public String resetTodayWorkTime(@RequestBody UpdateWorker updateWorker) throws Exception {
+        log.info("[Test] Reset Today Work Time, {}", updateWorker.getWorkerName());
+
+        workerService.resetTodayWorkTime(updateWorker.getWorkerName());
+
+        return "Reset Today Work Time";
+    }
+
+    @PutMapping(FreeWorkConstant.RESET_WEEK)
+    public String resetWeeklyWorkTime(@RequestBody UpdateWorker updateWorker) throws Exception {
+        log.info("[Test] Reset Weekly Work Time, {}", updateWorker.getWorkerName());
+
+        workerService.resetWeeklyWorkTime(updateWorker.getWorkerName());
+
+        return "Reset Weekly Work Time";
+    }
+
     @GetMapping(FreeWorkConstant.WORK_STATUS_URL)
-    public Worker findOneWorker(@RequestParam("name") String name) {
+    public Worker findOneWorker(@RequestParam("name") String name) throws Exception {
         log.info("[Test] Worker Status");
 
         return workerService.getWorker(name);
     }
 
     @GetMapping(FreeWorkConstant.WORK_TEAM_STATUS)
-    public List<Worker> findAllWorkers() {
+    public List<Worker> findAllWorkers() throws Exception {
         log.info("[Test] All Worker Status");
 
         return workerService.getWorkers();

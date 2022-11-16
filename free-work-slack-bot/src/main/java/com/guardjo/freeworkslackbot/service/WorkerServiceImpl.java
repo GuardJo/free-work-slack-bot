@@ -18,7 +18,7 @@ public class WorkerServiceImpl implements WorkerService {
     private TimeCalculator timeCalculator;
 
     @Override
-    public Worker createWorker(String workerName) {
+    public Worker createWorker(String workerName) throws Exception {
         Worker worker = getWorker(workerName);
 
         if (worker != null) {
@@ -34,7 +34,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public Worker deleteWorker(String workerName) {
+    public Worker deleteWorker(String workerName) throws Exception {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
@@ -49,7 +49,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void startWork(String workerName) {
+    public void startWork(String workerName) throws Exception {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
@@ -64,7 +64,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public float finishWork(String workerName) {
+    public float finishWork(String workerName) throws Exception {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
@@ -90,7 +90,25 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public void resetWorkTime(String workerName) {
+    public void resetTodayWorkTime(String workerName) throws Exception {
+        Worker worker = getWorker(workerName);
+
+        if (worker == null) {
+            log.error("[Test] Not Found Work Start Time", workerName);
+        }
+        else {
+            worker.setWeeklyWorkTime(0);
+            worker.setTodayWorkTime(0);
+            worker.setWorkStartTime(null);
+
+            workerRepository.save(worker);
+
+            log.info("[Test] Reset Time of Worker {}", workerName);
+        }
+    }
+
+    @Override
+    public void resetWeeklyWorkTime(String workerName) throws Exception {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
@@ -102,12 +120,14 @@ public class WorkerServiceImpl implements WorkerService {
             worker.setWorkStartTime(null);
             worker.setWorkFinishedTime(null);
 
+            workerRepository.save(worker);
+
             log.info("[Test] Reset Time of Worker {}", workerName);
         }
     }
 
     @Override
-    public Worker getWorker(String workerName) {
+    public Worker getWorker(String workerName) throws Exception {
         List<Worker> workers = workerRepository.findByName(workerName);
 
         if (workers.isEmpty()) {
@@ -121,7 +141,7 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getWorkers() {
+    public List<Worker> getWorkers() throws Exception {
         List<Worker> workers = workerRepository.findAll();
 
         if (workers.isEmpty()) {
