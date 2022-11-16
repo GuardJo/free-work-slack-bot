@@ -14,11 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,7 +57,7 @@ class FreeWorkControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("/status 요청 테스트")
+    @DisplayName("/worker 요청 테스트")
     @Test
     void testGetStatus() throws Exception {
         mockMvc.perform(get(FreeWorkConstant.WORK_STATUS_URL)
@@ -67,7 +67,7 @@ class FreeWorkControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("/team-status 요청 테스트")
+    @DisplayName("/worker/list 요청 테스트")
     @Test
     void testGetTeamStatus() throws Exception {
         mockMvc.perform(get(FreeWorkConstant.WORK_TEAM_STATUS))
@@ -84,6 +84,15 @@ class FreeWorkControllerTest {
         mockMvc.perform(put(FreeWorkConstant.WORK_FINISH_URL)
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @DisplayName("/worker delete 요청 테스트")
+    @Test
+    void testDeleteWorker() throws Exception {
+        mockMvc.perform(delete(FreeWorkConstant.DELETE_URL)
+                .param("name", "testName"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

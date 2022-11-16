@@ -93,7 +93,7 @@ class WorkerRepositoryTest {
 
     @DisplayName("해당하는 이름의 작업자 제거 테스트")
     @Test
-    void testDelteWorkerWithName() {
+    void testDeleteWorkerWithName() {
         // data.json 파일 내 2번째 데이터
         workerRepository.deleteByName("Gavrielle Lean");
 

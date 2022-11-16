@@ -67,4 +67,13 @@ public class FreeWorkController {
 
         return workerService.getWorkers();
     }
+
+    @DeleteMapping(FreeWorkConstant.DELETE_URL)
+    public String deleteWorker(@RequestParam("name") String name) throws Exception {
+        log.info("[Test] Delete Worker");
+
+        Worker worker = workerService.deleteWorker(name);
+
+        return "Deleted Worker " + worker.getName();
+    }
 }
