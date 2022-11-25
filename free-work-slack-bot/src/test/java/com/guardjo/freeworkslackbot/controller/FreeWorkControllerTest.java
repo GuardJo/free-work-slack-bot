@@ -80,7 +80,7 @@ class FreeWorkControllerTest {
     @ParameterizedTest
     @MethodSource("resetURL")
     void testPutResetTime(String resetUrl) throws Exception {
-        mockMvc.perform(post(FreeWorkConstant.WORK_FINISH_URL)
+        mockMvc.perform(post(resetUrl)
                         .header(FreeWorkConstant.USER_ID, "testId")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
