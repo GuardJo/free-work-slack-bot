@@ -1,6 +1,5 @@
 package com.guardjo.freeworkslackbot.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guardjo.freeworkslackbot.constant.FreeWorkConstant;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,16 +27,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FreeWorkControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @DisplayName("/work-start 요청 테스트")
     @ParameterizedTest
-    @MethodSource("testUserIdHeaders")
-    void testWorkStart(String slackUserId) throws Exception {
+    @MethodSource("testParams")
+    void testWorkStart(String key, String value) throws Exception {
         mockMvc.perform(post(FreeWorkConstant.WORK_START_URL)
-                        .header(FreeWorkConstant.USER_ID, slackUserId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param(key, value))
                 .andExpect(status().isOk())
                 .andExpect(isNotError())
                 .andDo(print());
@@ -45,11 +42,11 @@ class FreeWorkControllerTest {
 
     @DisplayName("/work-finish 요청 테스트")
     @ParameterizedTest
-    @MethodSource("testUserIdHeaders")
-    void testWorkFinish(String slackUserId) throws Exception {
+    @MethodSource("testParams")
+    void testWorkFinish(String key, String value) throws Exception {
         mockMvc.perform(post(FreeWorkConstant.WORK_FINISH_URL)
-                        .header(FreeWorkConstant.USER_ID, slackUserId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param(key, value))
                 .andExpect(status().isOk())
                 .andExpect(isNotError())
                 .andDo(print());
@@ -57,11 +54,11 @@ class FreeWorkControllerTest {
 
     @DisplayName("/worker 요청 테스트")
     @ParameterizedTest
-    @MethodSource("testUserIdHeaders")
-    void testGetStatus(String slackUserId) throws Exception {
+    @MethodSource("testParams")
+    void testGetStatus(String key, String value) throws Exception {
         mockMvc.perform(post(FreeWorkConstant.WORK_STATUS_URL)
-                        .header(FreeWorkConstant.USER_ID, slackUserId)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param(key, value))
                 .andExpect(status().isOk())
                 .andExpect(isNotError())
                 .andDo(print());
@@ -81,8 +78,8 @@ class FreeWorkControllerTest {
     @MethodSource("resetURL")
     void testPutResetTime(String resetUrl) throws Exception {
         mockMvc.perform(post(resetUrl)
-                        .header(FreeWorkConstant.USER_ID, "testId")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("user_name", "testName"))
                 .andExpect(status().isOk())
                 .andExpect(isNotError())
                 .andDo(print());
@@ -90,19 +87,20 @@ class FreeWorkControllerTest {
 
     @DisplayName("/delete-worker 요청 테스트")
     @ParameterizedTest
-    @MethodSource("testUserIdHeaders")
-    void testDeleteWorker(String slackUserId) throws Exception {
+    @MethodSource("testParams")
+    void testDeleteWorker(String key, String value) throws Exception {
         mockMvc.perform(post(FreeWorkConstant.DELETE_URL)
-                        .header(FreeWorkConstant.USER_ID, slackUserId))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param(key, value))
                 .andExpect(status().isOk())
                 .andExpect(isNotError())
                 .andDo(print());
     }
 
-    private static Stream<Arguments> testUserIdHeaders() {
+    private static Stream<Arguments> testParams() {
         return Stream.of(
-                Arguments.of("slack-id-01"),
-                Arguments.of("slack-id-02")
+                Arguments.of("user_name", "testName1"),
+                Arguments.of("user_name", "testName2")
         );
     }
 
