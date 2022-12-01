@@ -13,8 +13,8 @@ class TimeCalculatorTest {
     @DisplayName("두 시간 사이의 차이값 반환 테스트")
     @Test
     void testCalculateTime() throws ParseException {
-        String startTimeStr = "2022-11-15 01:00:00.000";
-        String finishTimeSTr = "2022-11-15 09:31:00.000";
+        String startTimeStr = "2022-11-15 08:00:00.000";
+        String finishTimeSTr = "2022-11-15 17:30:00.000";
 
         Date startTime = generateStartTime(startTimeStr);
         Date finishTime = generateStartTime(finishTimeSTr);
