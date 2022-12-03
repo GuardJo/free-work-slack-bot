@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class FreeWorkController {
 
     @PostMapping(value = FreeWorkConstant.WORK_START_URL, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String startWork(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Work Start!");
+        log.info("Work Start!");
 
         workerService.startWork(slackBotRequest.getUser_name());
 
@@ -30,7 +29,7 @@ public class FreeWorkController {
 
     @PostMapping(value = FreeWorkConstant.WORK_FINISH_URL, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String finishWork(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Work Finish!");
+        log.info("Work Finish!");
 
         float workTime = workerService.finishWork(slackBotRequest.getUser_name());
         float weeklyTime = workerService.getWorker(slackBotRequest.getUser_name()).getWeeklyWorkTime();
@@ -41,7 +40,7 @@ public class FreeWorkController {
 
     @PostMapping(value = FreeWorkConstant.RESET_TODAY, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String resetTodayWorkTime(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Reset Today Work Time, {}", slackBotRequest.getUser_name());
+        log.info("Reset Today Work Time, {}", slackBotRequest.getUser_name());
 
         workerService.resetTodayWorkTime(slackBotRequest.getUser_name());
 
@@ -50,7 +49,7 @@ public class FreeWorkController {
 
     @PostMapping(value = FreeWorkConstant.RESET_WEEK, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String resetWeeklyWorkTime(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Reset Weekly Work Time, {}", slackBotRequest.getUser_name());
+        log.info("Reset Weekly Work Time, {}", slackBotRequest.getUser_name());
 
         workerService.resetWeeklyWorkTime(slackBotRequest.getUser_name());
 
@@ -59,21 +58,21 @@ public class FreeWorkController {
 
     @PostMapping(value = FreeWorkConstant.WORK_STATUS_URL, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Worker findOneWorker(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Worker Status");
+        log.info("Worker Status");
 
         return workerService.getWorker(slackBotRequest.getUser_name());
     }
 
     @PostMapping(FreeWorkConstant.WORK_TEAM_STATUS)
     public List<Worker> findAllWorkers() throws Exception {
-        log.info("[Test] All Worker Status");
+        log.info("All Worker Status");
 
         return workerService.getWorkers();
     }
 
     @PostMapping(value = FreeWorkConstant.DELETE_URL, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String deleteWorker(SlackBotRequest slackBotRequest) throws Exception {
-        log.info("[Test] Delete Worker, {}", slackBotRequest.getUser_name());
+        log.info("Delete Worker, {}", slackBotRequest.getUser_name());
 
         Worker worker = workerService.deleteWorker(slackBotRequest.getUser_name());
 
