@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class FreeWorkControllerAdvice {
     @ExceptionHandler(NullPointerException.class)
     protected String handleNullPointerException(NullPointerException e) {
-        log.error("[Test] Object is Null, ", e);
+        log.error("Object is Null, ", e);
 
         return "Not Found Data";
     }
 
     @ExceptionHandler(Exception.class)
     protected String handleDefaultException(Exception e) {
-        log.error("[Test] Error : ", e);
+        log.error("Error : ", e);
 
         return "Error : " + e.getMessage();
     }

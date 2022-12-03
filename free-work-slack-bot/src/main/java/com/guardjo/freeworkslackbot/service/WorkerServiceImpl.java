@@ -38,7 +38,7 @@ public class WorkerServiceImpl implements WorkerService {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
-            log.warn("[Test] Not Found Worker {}", workerName);
+            log.warn("Not Found Worker {}", workerName);
             return null;
         }
 
@@ -60,7 +60,7 @@ public class WorkerServiceImpl implements WorkerService {
 
         workerRepository.save(worker);
 
-        log.info("[Test] Updated WorkStartTime, ", worker.getWorkStartTime());
+        log.info("Updated WorkStartTime, ", worker.getWorkStartTime());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class WorkerServiceImpl implements WorkerService {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
-            log.error("[Test] Not Found Work Start Time", workerName);
+            log.error("Not Found Work Start Time", workerName);
 
             // 올바르지 않은 시간 값이나, 사용자가 입력으로 들어온 경우
             return -1;
@@ -80,7 +80,7 @@ public class WorkerServiceImpl implements WorkerService {
             );
 
             worker.setWeeklyWorkTime(worker.getWeeklyWorkTime() + worker.getTodayWorkTime());
-            log.info("[Test] Update WorkTime, todayWorkTime : {}, weeklyWorkTime : {}"
+            log.info("Update WorkTime, todayWorkTime : {}, weeklyWorkTime : {}"
                     , worker.getTodayWorkTime(), worker.getWeeklyWorkTime());
 
             workerRepository.save(worker);
@@ -94,7 +94,7 @@ public class WorkerServiceImpl implements WorkerService {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
-            log.error("[Test] Not Found Work Start Time", workerName);
+            log.error("Not Found Work Start Time", workerName);
         }
         else {
             worker.setTodayWorkTime(0);
@@ -103,7 +103,7 @@ public class WorkerServiceImpl implements WorkerService {
 
             workerRepository.save(worker);
 
-            log.info("[Test] Reset Time of Worker {}", workerName);
+            log.info("Reset Time of Worker {}", workerName);
         }
     }
 
@@ -112,7 +112,7 @@ public class WorkerServiceImpl implements WorkerService {
         Worker worker = getWorker(workerName);
 
         if (worker == null) {
-            log.error("[Test] Not Found Work Start Time", workerName);
+            log.error("Not Found Work Start Time", workerName);
         }
         else {
             worker.setWeeklyWorkTime(0);
@@ -122,7 +122,7 @@ public class WorkerServiceImpl implements WorkerService {
 
             workerRepository.save(worker);
 
-            log.info("[Test] Reset Time of Worker {}", workerName);
+            log.info("Reset Time of Worker {}", workerName);
         }
     }
 
@@ -131,11 +131,11 @@ public class WorkerServiceImpl implements WorkerService {
         List<Worker> workers = workerRepository.findByName(workerName);
 
         if (workers.isEmpty()) {
-            log.warn("[Test] Not Found worker, {}", workerName);
+            log.warn("Not Found worker, {}", workerName);
             return null;
         }
 
-        log.info("[Test] Founded Worker {}", workerName);
+        log.info("Founded Worker {}", workerName);
 
         return workers.get(0);
     }
@@ -145,7 +145,7 @@ public class WorkerServiceImpl implements WorkerService {
         List<Worker> workers = workerRepository.findAll();
 
         if (workers.isEmpty()) {
-            log.info("[Test] Not Found Any Workers");
+            log.info("Not Found Any Workers");
             return null;
         }
 
